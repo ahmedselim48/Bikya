@@ -22,6 +22,8 @@ namespace Bikya.Data
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Category> categories { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
