@@ -23,9 +23,4 @@ namespace Bikya.Data.Models
         public Wallet Wallet { get; set; }
     }
 
-    public enum TransactionType
-    {
-        Credit, // دخل
-        Debit   // خصم
-    }
 }

@@ -22,11 +22,4 @@ namespace Bikya.Data.Models
         public string? Message { get; set; }  // optional note from sender
     }
 
-    public enum ExchangeStatus
-    {
-        Pending,
-        Accepted,
-        Rejected
-    }
-
 }
