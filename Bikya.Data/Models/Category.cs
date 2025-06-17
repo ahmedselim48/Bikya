@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data.Models
 {
-  public  class Category
+    public class Category
     {
         public int Id { get; set; }
 
-        [Required, MaxLength(50)]
         public string Name { get; set; }
 
-        [MaxLength(300)]
+        public string? IconUrl { get; set; }
+
         public string? Description { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation property
+        // علاقة One-to-Many مع Product
         public ICollection<Product> Products { get; set; }
     }
 }
+
+    

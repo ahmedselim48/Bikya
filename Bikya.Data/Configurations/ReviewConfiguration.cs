@@ -27,27 +27,19 @@ namespace Bikya.Data.Configurations
             builder.HasOne(x => x.Seller)
                 .WithMany(u => u.ReviewsReceived)
                 .HasForeignKey(x => x.SellerId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); //Restrict
 
             builder.HasOne(x => x.Reviewer)
                 .WithMany(u => u.ReviewsWritten)
                 .HasForeignKey(x => x.ReviewerId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); //Restrict 
 
-         
+
 
             builder.HasOne(x => x.Order)
        .WithMany(o => o.Reviews)
        .HasForeignKey(x => x.OrderId)
        .OnDelete(DeleteBehavior.Cascade);
-
-
-
-
-
-
-
-
 
 
         }

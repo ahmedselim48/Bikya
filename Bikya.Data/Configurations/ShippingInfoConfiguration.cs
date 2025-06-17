@@ -48,7 +48,7 @@ namespace Bikya.Data.Configurations
             builder.HasOne(x=>x.Order)
                 .WithOne(x=> x.ShippingInfo)
                 .HasForeignKey<ShippingInfo>(x=> x.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             
 
 
