@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data.Enums
 {
-    class TransactionType
+    public enum TransactionType
     {
         Credit, // دخل
         Debit   // خصم

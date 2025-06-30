@@ -1,4 +1,5 @@
-﻿using Bikya.Data.Models;
+﻿using Bikya.Data.Enums;
+using Bikya.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

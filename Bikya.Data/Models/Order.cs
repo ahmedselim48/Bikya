@@ -1,4 +1,6 @@
-﻿namespace Bikya.Data.Models
+﻿using Bikya.Data.Enums;
+
+namespace Bikya.Data.Models
 {
     public class Order
     {
@@ -8,10 +10,10 @@
         public Product Product { get; set; }
 
         public int BuyerId { get; set; }
-        public User Buyer { get; set; }
+        public ApplicationUser Buyer { get; set; }
 
         public int SellerId { get; set; }
-        public User Seller { get; set; }
+        public ApplicationUser Seller { get; set; }
 
         public decimal TotalAmount { get; set; }
         public decimal PlatformFee { get; set; }

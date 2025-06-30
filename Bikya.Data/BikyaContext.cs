@@ -1,5 +1,6 @@
 ﻿using Bikya.Data.Configurations;
 using Bikya.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data
 {
-    public class BikyaContext : DbContext
+    public class BikyaContext : IdentityDbContext<ApplicationUser, ApplicationRole, int> //DbContext
     {
         public BikyaContext(DbContextOptions<BikyaContext> options)
             : base(options) 
@@ -17,7 +18,7 @@ namespace Bikya.Data
         
         }
 
-        public DbSet<User> Users { get; set; }
+       // public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Review> Reviews { get; set; }

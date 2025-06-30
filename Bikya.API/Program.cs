@@ -1,8 +1,12 @@
 using Bikya.Data;
 using Bikya.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -137,10 +141,10 @@ namespace Bikya
             var app = builder.Build();
 
             // Seed roles
-            using (var scope = app.Services.CreateScope())
-            {
-                SeedRoles(scope.ServiceProvider).Wait();
-            }
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    SeedRoles(scope.ServiceProvider).Wait();
+            //}
 
             if (app.Environment.IsDevelopment())
             {

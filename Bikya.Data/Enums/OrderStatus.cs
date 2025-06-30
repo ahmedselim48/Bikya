@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data.Enums
 {
-    class OrderStatus
+   public enum OrderStatus
     {
         Pending,
         Paid,

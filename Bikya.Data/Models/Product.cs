@@ -25,7 +25,7 @@ namespace Bikya.Data.Models
         public DateTime CreatedAt { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
 

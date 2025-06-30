@@ -21,7 +21,7 @@ namespace Bikya.Data.Configurations
 
             builder.Property(x => x.Comment).HasMaxLength(1000);
 
-            builder.Property(x => x.CreateAt)
+            builder.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(x => x.Seller)

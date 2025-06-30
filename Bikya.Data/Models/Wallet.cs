@@ -13,7 +13,7 @@ namespace Bikya.Data.Models
         public decimal Balance { get; set; } = 0;
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public ICollection<Transaction> Transactions { get; set; }
     }

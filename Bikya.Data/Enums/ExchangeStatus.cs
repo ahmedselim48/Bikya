@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data.Enums
 {
-    class ExchangeStatus
+   public enum ExchangeStatus
     {
         Pending,
         Accepted,
-        Rejected
+        Rejected 
     }
 }
