@@ -15,6 +15,11 @@ namespace Bikya.Data.Models
         public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string? LinkedPaymentMethod { get; set; }
+        public bool IsLocked { get; set; } = false;
+
+
     }
 }

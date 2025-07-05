@@ -1,5 +1,7 @@
 using Bikya.Data;
 using Bikya.Data.Models;
+using Bikya.Services.Interfaces;
+using Bikya.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +29,8 @@ namespace Bikya
             #region Bikya Context
             builder.Services.AddDbContext<BikyaContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IWalletService, WalletService>();
 
             // Configure Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

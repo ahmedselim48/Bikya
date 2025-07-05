@@ -16,12 +16,16 @@ namespace Bikya.Data.Models
         public DateTime CreatedAt { get; set; }
 
         public TransactionType Type { get; set; }
+        public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
 
         public string? Description { get; set; }
 
         // Foreign key to Wallet
         public int WalletId { get; set; }
         public Wallet Wallet { get; set; }
+
+        public int? RelatedOrderId { get; set; }
+
     }
 
 }

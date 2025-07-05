@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bikya.Data.Enums
 {
-    public enum TransactionType
+    public  enum  TransactionStatus
     {
-        Deposit = 1,
-        Withdraw = 2,
-        Payment = 3,
-        Refund = 4
+        Pending = 0,
+        Completed = 1,
+        Failed = 2,
+        Cancelled = 3
     }
 }
