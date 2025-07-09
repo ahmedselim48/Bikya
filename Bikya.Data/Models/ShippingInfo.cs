@@ -1,32 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Bikya.Data.Enums;
 
 namespace Bikya.Data.Models
 {
     public class ShippingInfo
     {
-        public int ShippingId {  get; set; }
-
-        public string RecipientName { get; set; }
-
-        public string Address { get; set; }
-        public string City { get; set; }
-
-        public string PostalCode { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public ShippingStatus status { get; set; }
-
-        public DateTime CreateAt { get; set; } 
-
+        public int ShippingId { get; set; }
+        public required string RecipientName { get; set; } // Required string
+        public required string Address { get; set; } // Required string
+        public required string City { get; set; } // Required string
+        public required string PostalCode { get; set; } // Required string
+        public required string PhoneNumber { get; set; } // Required string
+        public ShippingStatus Status { get; set; }
+        public DateTime CreateAt { get; set; }
         public int OrderId { get; set; }
-        public Order Order { get; set; }
-
-
-
+        public required Order Order { get; set; } // Required navigation property
     }
 }

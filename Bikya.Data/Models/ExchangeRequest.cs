@@ -1,10 +1,6 @@
 ﻿using Bikya.Data.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bikya.Data.Models
 {
@@ -12,15 +8,14 @@ namespace Bikya.Data.Models
     {
         public int Id { get; set; }
         public int OfferedProductId { get; set; }
-        public Product OfferedProduct { get; set; }
+        public required Product OfferedProduct { get; set; } // Required navigation property
 
         public int RequestedProductId { get; set; }
-        public Product RequestedProduct { get; set; }
+        public required Product RequestedProduct { get; set; } // Required navigation property
 
         public ExchangeStatus Status { get; set; } = ExchangeStatus.Pending;
         public DateTime RequestedAt { get; set; }
 
-        public string? Message { get; set; }  // optional note from sender
+        public string? Message { get; set; } // Nullable string
     }
-
 }
