@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bikya.API.Areas.Identity.Models
+namespace Bikya.DTOs.UserDTOs
 {
     public class RegisterDto
     {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// namespace Bikya.DTOs.UserDTOs;
 
-namespace Bikya.API.Areas.Identity.Models
+namespace Bikya.DTOs.UserDTOs
 {
     public class LoginDto
     {

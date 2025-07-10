@@ -1,6 +1,6 @@
-﻿namespace Bikya.API.Areas.Wallet.DTOs
+﻿namespace Bikya.DTOs.WalletDTOs
 {
-    public class DepositRequestDto
+    public class WithdrawRequestDto
     {
         public int UserId { get; set; }
 

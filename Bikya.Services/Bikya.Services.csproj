@@ -8,6 +8,7 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Bikya.Data\Bikya.Data.csproj" />
+		<ProjectReference Include="..\Bikya.DTOs\Bikya.DTOs.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

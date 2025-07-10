@@ -31,6 +31,8 @@ namespace Bikya
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IWalletService, WalletService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IExchangeRequestService, ExchangeRequestService>();
 
             // Configure Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

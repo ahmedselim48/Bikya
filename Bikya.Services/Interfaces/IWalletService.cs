@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bikya.API.Areas.Wallet.DTOs;
-using Bikya.Data.Models;
 using Bikya.Data.Response;
+using Bikya.DTOs.WalletDTOs;
+
+//using Bikya.DTOs.WalletDTOs;
 
 
 namespace Bikya.Services.Interfaces

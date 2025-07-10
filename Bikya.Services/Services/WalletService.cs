@@ -1,5 +1,4 @@
-﻿using Bikya.API.Areas.Wallet.DTOs;
-using Bikya.Data;
+﻿using Bikya.Data;
 using Bikya.Data.Enums;
 using Bikya.Data.Models;
 using Bikya.Data.Response;
@@ -10,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bikya.DTOs.WalletDTOs;
+
 
 namespace Bikya.Services.Services
 {

@@ -1,4 +1,4 @@
-﻿using Bikya.API.Areas.Identity.Models;
+﻿using Bikya.DTOs.UserDTOs;
 using Bikya.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

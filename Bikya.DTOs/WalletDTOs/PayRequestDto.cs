@@ -1,10 +1,11 @@
-﻿namespace Bikya.API.Areas.Wallet.DTOs
+﻿namespace Bikya.DTOs.WalletDTOs
 {
-    public class WithdrawRequestDto
+    public class PayRequestDto
     {
         public int UserId { get; set; }
 
         public decimal Amount { get; set; }
+        public int OrderId { get; set; }
         public string? Description { get; set; }
     }
 

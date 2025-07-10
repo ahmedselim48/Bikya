@@ -16,7 +16,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Bikya.Data\Bikya.Data.csproj" />
+		<ProjectReference Include="..\Bikya.DTOs\Bikya.DTOs.csproj" />
 		<ProjectReference Include="..\Bikya.Services\Bikya.Services.csproj" />
 		<ProjectReference Include="..\Bikya\Bikya.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Areas\Wallet\DTOs\" />
 	</ItemGroup>
 </Project>

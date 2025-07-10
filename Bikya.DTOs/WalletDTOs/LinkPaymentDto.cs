@@ -1,4 +1,4 @@
-﻿namespace Bikya.API.Areas.Wallet.DTOs
+﻿namespace Bikya.DTOs.WalletDTOs
 {
     public class LinkPaymentDto
     {

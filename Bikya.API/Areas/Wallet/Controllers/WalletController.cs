@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Bikya.Services.Interfaces;
-using Bikya.API.Areas.Wallet.DTOs;
 
+using Bikya.DTOs.WalletDTOs;
 namespace Bikya.API.Areas.Wallet.Controllers
 {
     [Area("Wallet")]
