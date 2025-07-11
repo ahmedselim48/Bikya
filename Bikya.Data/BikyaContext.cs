@@ -21,10 +21,10 @@ namespace Bikya.Data
        // public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<ShippingInfo> ShippingInfos { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<ShippingInfo> ShippingInfos { get; set; } 
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ExchangeRequest> ExchangeRequests { get; set; }
@@ -47,5 +47,6 @@ namespace Bikya.Data
             base.OnModelCreating(modelBuilder);
 
         }
+
     }
 }

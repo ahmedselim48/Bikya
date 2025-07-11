@@ -12,7 +12,7 @@ namespace Bikya.API.Areas.Identity.Controllers
 {
     [Route("api/[area]/[controller]")]
     [ApiController]
-    [Area("Identity")]
+    //[Area("Identity")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;

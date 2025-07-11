@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bikya.Data.Models;
 
-namespace Bikya.Data.Models
+namespace Bikya.API.Areas.Category.Models
 {
+
     public class Category
     {
         public int Id { get; set; }
@@ -24,6 +20,7 @@ namespace Bikya.Data.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
-}
 
-    
+
+
+}

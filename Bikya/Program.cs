@@ -139,7 +139,7 @@ namespace Bikya
             // Seed roles
             using (var scope = app.Services.CreateScope())
             {
-                SeedRoles(scope.ServiceProvider).Wait();
+                //SeedRoles(scope.ServiceProvider).Wait();
             }
 
             if (app.Environment.IsDevelopment())

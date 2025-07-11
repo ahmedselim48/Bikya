@@ -144,11 +144,11 @@ namespace Bikya
 
             var app = builder.Build();
 
-            // Seed roles
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    SeedRoles(scope.ServiceProvider).Wait();
-            //}
+            //Seed roles
+            using (var scope = app.Services.CreateScope())
+            {
+                SeedRoles(scope.ServiceProvider).Wait();
+            }
 
             if (app.Environment.IsDevelopment())
             {

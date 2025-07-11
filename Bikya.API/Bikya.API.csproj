@@ -19,4 +19,8 @@
 		<ProjectReference Include="..\Bikya.Services\Bikya.Services.csproj" />
 		<ProjectReference Include="..\Bikya\Bikya.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Areas\Identity\Services\" />
+	</ItemGroup>
 </Project>

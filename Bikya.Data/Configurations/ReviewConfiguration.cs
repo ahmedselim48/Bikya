@@ -39,7 +39,7 @@ namespace Bikya.Data.Configurations
             builder.HasOne(x => x.Order)
        .WithMany(o => o.Reviews)
        .HasForeignKey(x => x.OrderId)
-       .OnDelete(DeleteBehavior.Cascade);
+       .OnDelete(DeleteBehavior.NoAction);
 
 
         }
