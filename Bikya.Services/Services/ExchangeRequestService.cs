@@ -36,7 +36,9 @@ namespace Bikya.Services.Services
                 var exchangeRequest = new ExchangeRequest
                 {
                     OfferedProductId = dto.OfferedProductId,
+                    OfferedProduct = offeredProduct, // Fix for CS9035: Required member 'ExchangeRequest.OfferedProduct' must be set
                     RequestedProductId = dto.RequestedProductId,
+                    RequestedProduct = requestedProduct, // Fix for CS9035: Required member 'ExchangeRequest.RequestedProduct' must be set
                     Message = dto.Message,
                     RequestedAt = DateTime.UtcNow
                 };

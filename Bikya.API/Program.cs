@@ -141,7 +141,8 @@ namespace Bikya
                     }
                 });
             });
-
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
             var app = builder.Build();
 
             //Seed roles

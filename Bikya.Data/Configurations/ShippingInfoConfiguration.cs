@@ -38,7 +38,7 @@ namespace Bikya.Data.Configurations
             builder.Property(x => x.PostalCode)
                 .HasMaxLength(7);
 
-            builder.Property(x => x.status).HasConversion<string>()
+            builder.Property(x => x.Status).HasConversion<string>()
                 .HasDefaultValue(ShippingStatus.Pending);
 
             builder.Property(x =>x.CreateAt)

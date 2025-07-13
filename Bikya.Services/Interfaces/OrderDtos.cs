@@ -22,7 +22,7 @@ namespace Bikya.Services.Interfaces
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Seller amount cannot be negative")]
         public decimal SellerAmount { get; set; }
-        [Required]
+        //[Required]
         public ShippingInfoDto? ShippingInfo { get; set; }
     }
 
@@ -59,7 +59,7 @@ namespace Bikya.Services.Interfaces
         public DateTime CreatedAt { get; set; }
         public DateTime? PaidAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public required ShippingInfoDto ShippingInfo { get; set; } // Required navigation property
+        public  ShippingInfoDto ShippingInfo { get; set; } // Required navigation property
         public List<ReviewDto> Reviews { get; set; } = new List<ReviewDto>(); // Initialized to empty list
     }
 

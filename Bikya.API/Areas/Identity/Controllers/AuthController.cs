@@ -10,9 +10,10 @@ using System.Text;
 
 namespace Bikya.API.Areas.Identity.Controllers
 {
-    [Route("api/[area]/[controller]")]
+    //[Route("api/[area]/[controller]")]
     [ApiController]
-    //[Area("Identity")]
+    [Area("Identity")]
+    [Route("Identity/[controller]/[action]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,7 +32,7 @@ namespace Bikya.API.Areas.Identity.Controllers
             _roleManager = roleManager;
             _jwtSettings = jwtSettings.Value;
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
@@ -98,7 +99,7 @@ namespace Bikya.API.Areas.Identity.Controllers
                 return StatusCode(500, new { message = " A server error occurred : " + ex.Message });
             }
         }
-
+       
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {

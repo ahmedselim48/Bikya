@@ -20,6 +20,62 @@ namespace Bikya.Services.Services
             this.context = context;
         }
 
+        //public async Task<ApiResponse<OrderResponseDto>> CreateOrderAsync(CreateOrderDto dto)
+        //{
+        //    try
+        //    {
+        //        var buyer = await context.Users.FindAsync(dto.BuyerId);
+        //        var seller = await context.Users.FindAsync(dto.SellerId);
+        //        var product = await context.Products.FindAsync(dto.ProductId);
+
+        //        if (buyer == null || seller == null || product == null)
+        //            return ApiResponse<OrderResponseDto>.ErrorResponse("Invalid Buyer, Seller, or Product", 400);
+
+        //        if (dto.BuyerId == dto.SellerId)
+        //            return ApiResponse<OrderResponseDto>.ErrorResponse("Buyer and Seller cannot be the same", 400);
+
+        //        var order = new Order
+        //        {
+        //            ProductId = dto.ProductId,
+        //            BuyerId = dto.BuyerId,
+        //            SellerId = dto.SellerId,
+        //            TotalAmount = dto.TotalAmount,
+        //            PlatformFee = dto.PlatformFee,
+        //            SellerAmount = dto.SellerAmount,
+        //            CreatedAt = DateTime.UtcNow
+        //        };
+        //        order.ShippingInfo = new ShippingInfo
+        //        {
+        //            RecipientName = dto.ShippingInfo.RecipientName,
+        //            Address = dto.ShippingInfo.Address,
+        //            City = dto.ShippingInfo.City,
+        //            PostalCode = dto.ShippingInfo.PostalCode,
+        //            PhoneNumber = dto.ShippingInfo.PhoneNumber,
+        //            CreateAt = DateTime.UtcNow,
+        //            Order = order
+        //        };
+
+
+        //        context.Orders.Add(order);
+        //        await context.SaveChangesAsync();
+
+        //        // Reload order with related data
+        //        var reloadedOrder = await context.Orders
+        //            .Include(o => o.Product)
+        //            .Include(o => o.Buyer)
+        //            .Include(o => o.Seller)
+        //            .Include(o => o.ShippingInfo)
+        //            .Include(o => o.Reviews)
+        //            .FirstOrDefaultAsync(o => o.Id == order.Id);
+
+        //        var responseDto = MapToResponseDto(reloadedOrder);
+        //        return ApiResponse<OrderResponseDto>.SuccessResponse(responseDto, "Order created successfully", 201);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ApiResponse<OrderResponseDto>.ErrorResponse($"A server error occurred: {ex.Message}", 500);
+        //    }
+        //}
         public async Task<ApiResponse<OrderResponseDto>> CreateOrderAsync(CreateOrderDto dto)
         {
             try
@@ -34,11 +90,16 @@ namespace Bikya.Services.Services
                 if (dto.BuyerId == dto.SellerId)
                     return ApiResponse<OrderResponseDto>.ErrorResponse("Buyer and Seller cannot be the same", 400);
 
+                if (dto.ShippingInfo == null)
+                {
+                    return ApiResponse<OrderResponseDto>.ErrorResponse("Shipping information is required", 400);
+                }
+
                 var order = new Order
                 {
-                    ProductId = dto.ProductId,
-                    BuyerId = dto.BuyerId,
-                    SellerId = dto.SellerId,
+                    Product = product,
+                    Buyer = buyer,
+                    Seller = seller,
                     TotalAmount = dto.TotalAmount,
                     PlatformFee = dto.PlatformFee,
                     SellerAmount = dto.SellerAmount,
@@ -50,14 +111,17 @@ namespace Bikya.Services.Services
                         City = dto.ShippingInfo.City,
                         PostalCode = dto.ShippingInfo.PostalCode,
                         PhoneNumber = dto.ShippingInfo.PhoneNumber,
-                        CreateAt = DateTime.UtcNow
+                        CreateAt = DateTime.UtcNow,
+                        Order = null // Temporary assignment to avoid CS9035  
                     }
                 };
+
+                // Fix CS9035 by explicitly setting the required member after initialization  
+                order.ShippingInfo.Order = order;
 
                 context.Orders.Add(order);
                 await context.SaveChangesAsync();
 
-                // Reload order with related data
                 var reloadedOrder = await context.Orders
                     .Include(o => o.Product)
                     .Include(o => o.Buyer)
@@ -74,7 +138,6 @@ namespace Bikya.Services.Services
                 return ApiResponse<OrderResponseDto>.ErrorResponse($"A server error occurred: {ex.Message}", 500);
             }
         }
-
         public async Task<ApiResponse<OrderResponseDto>> GetOrderByIdAsync(int id)
         {
             try
