@@ -1,5 +1,7 @@
 using Bikya.Data;
 using Bikya.Data.Models;
+using Bikya.Data.Repositories;
+using Bikya.Data.Repositories.Interfaces;
 using Bikya.Services.Interfaces;
 using Bikya.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +35,12 @@ namespace Bikya
             builder.Services.AddScoped<IWalletService, WalletService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IExchangeRequestService, ExchangeRequestService>();
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            builder.Services.AddScoped<ProductService, ProductService>();
+            builder.Services.AddScoped<ProductImageService, ProductImageService>();
+
 
             // Configure Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

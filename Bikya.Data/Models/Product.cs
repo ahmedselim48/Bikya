@@ -24,14 +24,14 @@ namespace Bikya.Data.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<ProductImage> Images { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
     }

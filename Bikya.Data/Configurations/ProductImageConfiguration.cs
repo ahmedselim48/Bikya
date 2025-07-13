@@ -22,6 +22,9 @@ namespace Bikya.Data.Configurations
             builder.Property(x => x.IsMain)
                    .IsRequired();
 
+            builder.Property(p => p.CreatedAt)
+                  .HasDefaultValueSql("GETDATE()");
+
             builder.HasOne(x => x.Product)
                    .WithMany(p => p.Images)
                    .HasForeignKey(x => x.ProductId)
