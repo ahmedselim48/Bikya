@@ -1,4 +1,5 @@
-﻿using Bikya.Data.Models;
+﻿using Bikya.Data.Enums;
+using Bikya.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -36,6 +37,13 @@ namespace Bikya.Data.Configurations
 
             builder.Property(p => p.CreatedAt)
                    .HasDefaultValueSql("GETDATE()");
+
+            builder.Property(p => p.IsApproved)
+                   .HasDefaultValue(false);
+
+            builder.Property(x => x.Status).HasConversion<string>()
+               .HasDefaultValue(ProductStatus.Available);
+
 
             builder.HasOne(p => p.User)
                    .WithMany(u => u.Products)

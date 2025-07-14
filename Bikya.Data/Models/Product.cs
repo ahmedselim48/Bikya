@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bikya.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace Bikya.Data.Models
         public string Condition { get; set; } // "New", "Used", etc.
 
         public DateTime CreatedAt { get; set; }
+        public bool IsApproved { get; set; } = false;
+        public ProductStatus Status { get; set; } = ProductStatus.Available;
 
         public int? UserId { get; set; }
         public ApplicationUser User { get; set; }

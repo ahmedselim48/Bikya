@@ -26,7 +26,7 @@ namespace Bikya.DTOs.ProductDTO
         [StringLength(50)]
         public string Condition { get; set; }
 
-        //public int CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [Required]
         public IFormFile MainImage { get; set; }

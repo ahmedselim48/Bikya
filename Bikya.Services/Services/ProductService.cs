@@ -13,17 +13,16 @@ namespace Bikya.Services.Services
     {
         #region Repo 
         private readonly IProductRepository _productRepository;
-        //private readonly ICategoryRepository _categoryRepository;
         private readonly IProductImageRepository productImageRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ProductImageService productImageService;
         public ProductService(IProductRepository productRepository,
-            //ICategoryRepository _categoryRepository,
-            IProductImageRepository productImageRepository, UserManager<ApplicationUser> userManager)
+            IProductImageRepository productImageRepository, UserManager<ApplicationUser> userManager, ProductImageService productSeproductImageServicervice)
         {
             _productRepository = productRepository;
-            //this._categoryRepository = _categoryRepository;
             this.productImageRepository = productImageRepository;
             this.userManager = userManager;
+            this.productImageService = productImageService;
         }
         #endregion
 
@@ -32,11 +31,27 @@ namespace Bikya.Services.Services
         {
             return await userManager.Users.AnyAsync(u => u.Id == userId);
         }
+        public async Task<bool> ISAdmin(int userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            var roles = await userManager.GetRolesAsync(user);
+            return roles.Contains("Admin");
+        }
 
         #endregion
 
         #region GET Methods
-        public Task<IEnumerable<Product>> GetProductsWithImagesAsync()
+        public Task<IEnumerable<Product>> GetApprovedProductsWithImagesAsync()
+        {
+            return _productRepository.GetApprovedProductsWithImages();
+        }
+
+        public Task<IEnumerable<Product>> GetNotApprovedProductsWithImagesAsync()
+        {
+            return _productRepository.GetNotApprovedProductsWithImages();
+        }
+
+        public Task<IEnumerable<Product>> GetAllProductsWithImagesAsync()
         {
             return _productRepository.GetProductsWithImages();
         }
@@ -49,7 +64,9 @@ namespace Bikya.Services.Services
 
             return product;
         }
-                
+
+
+        
         public async Task<IEnumerable<Product>> GetProductsByUserAsync(int userId)
         {
             var iseExits =await  UserExistsAsync(userId);
@@ -57,37 +74,24 @@ namespace Bikya.Services.Services
 
             return await _productRepository.GetProductsByUserAsync(userId);
         }
+
+        public async Task<IEnumerable<Product>> GetNotApprovedProductByUserAsync(int userId)
+        {
+            var iseExits = await UserExistsAsync(userId);
+            if (!iseExits) throw new ArgumentException("User does not exist");
+
+            return await _productRepository.GetNotApprovedProductByUserAsync(userId);
+        }
         #endregion
 
-
-        public async Task UpdateProductAsync(int id,ProductDTO productDTO,int userId)
-        {
-            //automaper here
-            var existing = await _productRepository.GetByIdAsync(id);
-            if (existing == null) throw new ArgumentException("Product not found");
-
-
-            if (existing.UserId != userId) throw new UnauthorizedAccessException("You do not have permission to update this product");
-
-            existing.Title = productDTO.Title;
-            existing.Description = productDTO.Description;
-            existing.Price = productDTO.Price;
-            existing.IsForExchange = productDTO.IsForExchange;
-            existing.Condition = productDTO.Condition;
-            //existing.CategoryId = productDTO.CategoryId;
-            
-
-            await _productRepository.UpdateAsync(existing);
-
-            return ;
-        }
+        #region CRUD
         public async Task<Product> CreateProductAsync(ProductDTO productDTO, int userId)
         {
-            bool exists = await _productRepository.GetSameProductSameUserAsync(userId,productDTO.Title);
+            bool exists = await _productRepository.GetSameProductSameUserAsync(userId, productDTO.Title);
 
             if (exists)
                 throw new ArgumentException("You already added a product with this title");
-            
+
             //automaper here
             var product = new Data.Models.Product
             {
@@ -96,8 +100,10 @@ namespace Bikya.Services.Services
                 Price = productDTO.Price,
                 IsForExchange = productDTO.IsForExchange,
                 Condition = productDTO.Condition,
-                //CategoryId = productDTO.CategoryId,
+                CategoryId = productDTO.CategoryId,
                 CreatedAt = DateTime.UtcNow,
+                IsApproved = false,
+                Status = Data.Enums.ProductStatus.Available,
                 UserId = userId
 
             };
@@ -105,30 +111,87 @@ namespace Bikya.Services.Services
             await _productRepository.CreateAsync(product);
             return product;
         }
+        public async Task UpdateProductAsync(int id,ProductDTO productDTO,int userId)
+        {
+            //automaper here
+            var existing = await _productRepository.GetByIdAsync(id);
+            if (existing == null) throw new ArgumentException("Product not found");
+
+            var isAdmin = await ISAdmin(userId);
+
+            if (existing.UserId != userId && !isAdmin) throw new UnauthorizedAccessException("You do not have permission to update this product");
+
+            if(existing.Status != Data.Enums.ProductStatus.Available)
+                throw new InvalidOperationException("You can not update a product that is in Process");
+
+            existing.Title = productDTO.Title;
+            existing.Description = productDTO.Description;
+            existing.Price = productDTO.Price;
+            existing.IsForExchange = productDTO.IsForExchange;
+            existing.Condition = productDTO.Condition;
+            existing.CategoryId = productDTO.CategoryId;
+            existing.IsApproved = false;
+
+
+            await _productRepository.UpdateAsync(existing);
+
+            return ;
+        }
+  
 
         
 
 
 
-        public async Task DeleteProductAsync(int id,int userId)
+        public async Task DeleteProductAsync(int id,int userId,string rootPath)
         {
-            var existing = await _productRepository.GetByIdAsync(id);
+            var existing = await _productRepository.GetProductWithImagesByIdAsync(id);
             if (existing == null) throw new ArgumentException("Product not found");
+            var isAdmin = await ISAdmin(userId);
 
+            if (existing.UserId != userId&&!isAdmin) throw new UnauthorizedAccessException("You do not have permission to delete this product");
 
-            if (existing.UserId != userId) throw new UnauthorizedAccessException("You do not have permission to delete this product");
+            if (existing.Status != Data.Enums.ProductStatus.Available)
+                throw new InvalidOperationException("You can not update a product that is in Process");
+
+            //foreach (var image in existing.Images)
+            //{
+                
+            //    await productImageService.DeleteProductImageAsync(image.Id,userId,rootPath);
+            //}
             await _productRepository.DeleteAsync(existing);
             return ;
         }
 
-        
 
-        //public Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId )
-        //{
-        //    var category=_categoryRepository.GetByIdAsync(categoryId);
-        //    if (category == null) return Task.FromResult<IEnumerable<Product>>(null);
-        //    return _productRepository.GetProductsByCategoryAsync(category);
-        //}
+        public async Task ApproveProductAsync(int productId)
+        {
+            var product = await _productRepository.GetProductWithImagesByIdAsync(productId);
+            if (product == null) throw new ArgumentException("Product  not found");
+
+            if (product.IsApproved) throw new InvalidOperationException("Product is already approved");
+            await _productRepository.ApproveProductAsync(productId);
+            return ;
+        }
+        public async Task RejectProductAsync(int productId)
+        {
+            var product = await _productRepository.GetProductWithImagesByIdAsync(productId);
+            if (product == null) throw new ArgumentException("Product  not found");
+
+            if (product.IsApproved) throw new InvalidOperationException("Product is already approved");
+            await _productRepository.RejectProductAsync(productId);
+            return;
+        }
+        #endregion
+
+        public Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
+        {
+            //var category = = await _productRepository.GetCategoryByIdAsync(categoryId);
+            //if (category == null) return Task.FromResult<IEnumerable<Product>>(null);
+            var category = new Category(
+                ); 
+            return _productRepository.GetProductsByCategoryAsync(category);
+        }
 
 
 

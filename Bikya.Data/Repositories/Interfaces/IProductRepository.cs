@@ -18,7 +18,13 @@ namespace Bikya.Data.Repositories.Interfaces
         Task<IEnumerable<Product>> GetProductsWithImages();
 
         Task<Product> GetProductWithImagesByIdAsync(int id);
+        Task<IEnumerable<Product>> GetApprovedProductsWithImages();
+        Task<IEnumerable<Product>> GetNotApprovedProductsWithImages();
         Task<bool> GetSameProductSameUserAsync(int userId, string title);
+        Task ApproveProductAsync(int id);
+        Task RejectProductAsync(int id);
+
+        Task<IEnumerable<Product>> GetNotApprovedProductByUserAsync(int userId);
 
 
     }

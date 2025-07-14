@@ -19,17 +19,82 @@ namespace Bikya.Data.Repositories
         {
             this.context = context;
         }
-        
+
+        #region Test
+
+        public async Task<bool> GetSameProductSameUserAsync(int userId, string title)
+        {
+
+            return await context.Products.AnyAsync(p => p.UserId == userId && p.Title == title);
+
+        }
+        #endregion
+
+
+        #region Get
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await context.Products.ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetProductsWithImages()
+        {
+            return await context.Products.Include(p => p.Images).ToListAsync();
+
+
+        }
+        public async Task<IEnumerable<Product>> GetApprovedProductsWithImages()
+        {
+
+
+            return await context.Products.Include(p => p.Images).Where(p => p.IsApproved == true).ToListAsync();
+
+        }
+        public async Task<IEnumerable<Product>> GetNotApprovedProductsWithImages()
+        {
+
+            return await context.Products.Include(p => p.Images).Where(p => p.IsApproved == false).ToListAsync();
+
+
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByUserAsync(int userId)
+        {
+
+            return await context.Products.Include(p => p.Images).Where(p => p.UserId == userId && p.IsApproved == true).ToListAsync();
+
+        }
+        public async Task<IEnumerable<Product>> GetNotApprovedProductByUserAsync(int userId)
+        {
+
+            return await context.Products.Include(p => p.Images).Where(p => p.UserId == userId && p.IsApproved == false).ToListAsync();
+
+        }
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(Category category)
+        {
+
+            return await context.Products
+                .Where(p => p.CategoryId == category.Id&&p.IsApproved==true)
+                .ToListAsync();
+        }
+
         public async Task<Product> GetByIdAsync(int id)
         {
             return await context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
+
+     
+
+
+        public async Task<Product> GetProductWithImagesByIdAsync(int id)
+        {
+            return await context.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+
+
+        #endregion
 
         public async Task CreateAsync(Product product)
         {
@@ -61,44 +126,24 @@ namespace Bikya.Data.Repositories
                 throw new Exception("Database update failed: " + inner, ex);
             }
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(Category category)
-        {
-             
-            return await context.Products
-                .Where(p => p.CategoryId == category.Id)
-                .ToListAsync(); 
-        }
+      
 
-        public async Task<IEnumerable<Product>> GetProductsByUserAsync(int userId)
+
+
+        public async Task ApproveProductAsync(int id)
         {
-            
-                return await context.Products.Include(p => p.Images).Where(p => p.UserId == userId).ToListAsync();
+            var product = await GetByIdAsync(id);
+            product.IsApproved = true;
+            await SaveChangesAsync();
 
         }
-
-    
-        public async Task<IEnumerable<Product>> GetProductsWithImages()
+        public async Task RejectProductAsync(int id)
         {
-            return await context.Products.Include(p => p.Images).ToListAsync();
-            
-
+            var product = await GetByIdAsync(id);
+            DeleteAsync(product);
+              await SaveChangesAsync();
+            return;
         }
-
-        public async Task<Product> GetProductWithImagesByIdAsync(int id)
-        {
-            return await context.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
-        }
-
-
-        public async Task<bool> GetSameProductSameUserAsync(int userId,string title)
-        {
-
-            return await context.Products.AnyAsync(p => p.UserId == userId && p.Title == title);
-
-        }
-
-
-
 
 
         //public Task<IEnumerable<Product>> GetProductsByConditionAsync(string condition)
