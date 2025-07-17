@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Bikya.Data.Enums;
 
 namespace Bikya.Services.Services
 {
@@ -25,7 +26,6 @@ namespace Bikya.Services.Services
             var reviews = await _context.Reviews
                 .Include(r => r.Reviewer)
                 .Include(r => r.Seller)
-                .Include(r => r.Product)
                 .Include(r => r.Order)
                 .ToListAsync();
 
@@ -38,7 +38,6 @@ namespace Bikya.Services.Services
             var review = await _context.Reviews
                 .Include(r => r.Reviewer)
                 .Include(r => r.Seller)
-                .Include(r => r.Product)
                 .Include(r => r.Order)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
@@ -58,13 +57,21 @@ namespace Bikya.Services.Services
             if (seller == null)
                 return ApiResponse<ReviewDTO>.ErrorResponse("Seller not found", 404);
 
-            var product = await _context.Products.FindAsync(dto.ProductId);
-            if (product == null)
-                return ApiResponse<ReviewDTO>.ErrorResponse("Product not found", 404);
+            var order = await _context.Orders.FirstOrDefaultAsync(o =>
+                 o.Id == dto.OrderId &&
+                 o.BuyerId == dto.ReviewerId &&
+                 o.SellerId == dto.SellerId &&
+                 o.Status == OrderStatus.Completed
+             );
 
-            var order = await _context.Orders.FindAsync(dto.OrderId);
             if (order == null)
-                return ApiResponse<ReviewDTO>.ErrorResponse("Order not found", 404);
+                return ApiResponse<ReviewDTO>.ErrorResponse("You can only review sellers you've bought from.", 403);
+
+            var existingReview = await _context.Reviews
+              .AnyAsync(r => r.OrderId == dto.OrderId && r.ReviewerId == dto.ReviewerId);
+
+            if (existingReview)
+                return ApiResponse<ReviewDTO>.ErrorResponse("You have already reviewed this order.", 409);
 
             var review = new Review
             {
@@ -74,8 +81,6 @@ namespace Bikya.Services.Services
                 Reviewer = reviewer,
                 SellerId = dto.SellerId,
                 Seller = seller,
-                ProductId = dto.ProductId,
-                Product = product,
                 OrderId = dto.OrderId,
                 Order = order,
                 CreatedAt = DateTime.UtcNow
@@ -87,12 +92,30 @@ namespace Bikya.Services.Services
             return ApiResponse<ReviewDTO>.SuccessResponse(ToReviewDTO(review), "Review created successfully", 201);
         }
 
+        public async Task<ApiResponse<List<ReviewDTO>>> GetReviewsForSellerAsync(int sellerId)
+        {
+            var reviews = await _context.Reviews
+                .Where(r => r.SellerId == sellerId)
+                .Select(r => new ReviewDTO
+                {
+                    ReviewerId = r.ReviewerId,
+                    SellerId = r.SellerId,
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    OrderId = r.OrderId,
+
+                })
+                .ToListAsync();
+
+            return ApiResponse<List<ReviewDTO>>.SuccessResponse(reviews);
+        }
+
+
         public async Task<ApiResponse<ReviewDTO>> UpdateAsync(int id, UpdateReviewDTO dto)
         {
             var review = await _context.Reviews
                 .Include(r => r.Reviewer)
                 .Include(r => r.Seller)
-                .Include(r => r.Product)
                 .Include(r => r.Order)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
@@ -128,7 +151,6 @@ namespace Bikya.Services.Services
                 CreatedAt = review.CreatedAt,
                 ReviewerId = review.ReviewerId,
                 SellerId = review.SellerId,
-                ProductId = review.ProductId,
                 OrderId = review.OrderId,
                 BuyerName = review.Reviewer?.UserName,
                 SellerName = review.Seller?.UserName,

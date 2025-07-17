@@ -13,7 +13,7 @@ using Bikya.Services.Interfaces;
 namespace Bikya.Services.Services
 {
 
-    public class CategoryService :ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly BikyaContext _context;
 
@@ -122,7 +122,7 @@ namespace Bikya.Services.Services
                 ParentCategoryId = category.ParentCategoryId,
                 Description = category.Description,
                 CreatedAt = category.CreatedAt,
-                
+
             };
         }
 

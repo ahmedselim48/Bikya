@@ -31,6 +31,17 @@ namespace Bikya
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IWalletService, WalletService>();
+            // 1. ?? ???????
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
 
             // Configure Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -143,6 +154,7 @@ namespace Bikya
             });
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+          
             var app = builder.Build();
 
             //Seed roles
@@ -156,7 +168,7 @@ namespace Bikya
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors("AllowAngularApp");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors("AllowSpecificOrigin");

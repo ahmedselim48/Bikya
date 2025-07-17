@@ -14,36 +14,35 @@ namespace Bikya.Data.Configurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
 
-            builder.ToTable("Categories");
-
             builder.HasKey(c => c.Id);
+
 
             builder.Property(c => c.Name)
                    .IsRequired()
-                   .HasMaxLength(100);
+                   .HasMaxLength(50);
 
             builder.Property(c => c.Description)
-                   .HasMaxLength(255);
+                   .HasMaxLength(300);
 
             builder.Property(c => c.IconUrl)
-                   .HasMaxLength(255);
+                   .HasMaxLength(300);
 
             builder.Property(c => c.CreatedAt)
                    .HasDefaultValueSql("GETUTCDATE()");
 
-            
+
             builder.HasOne(c => c.ParentCategory)
                    .WithMany(c => c.SubCategories)
                    .HasForeignKey(c => c.ParentCategoryId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            
+
             builder.HasMany(c => c.Products)
                    .WithOne(p => p.Category)
                    .HasForeignKey(p => p.CategoryId)
-                   .OnDelete(DeleteBehavior.NoAction); 
+                   .OnDelete(DeleteBehavior.Restrict);
         }
 
-    
+
     }
 }

@@ -20,9 +20,11 @@ namespace Bikya.Data.Models
         public Category? ParentCategory { get; set; }
 
         public ICollection<Category>? SubCategories { get; set; }
+
         public ICollection<Product> Products { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     }
 }
 

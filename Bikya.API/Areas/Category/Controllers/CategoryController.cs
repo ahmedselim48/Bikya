@@ -9,15 +9,14 @@ using Bikya.Services.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoriesController : ControllerBase
+public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _service;
 
-    public CategoriesController(ICategoryService service)
+    public CategoryController(ICategoryService service)
     {
         _service = service;
     }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -40,6 +39,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
+    //[Authorize(Roles ="Admin")]
     public async Task<IActionResult> Add([FromBody] CreateCategoryDTO dto)
     {
         if (!ModelState.IsValid)
@@ -50,6 +50,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    //[Authorize(Roles ="Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDTO dto)
     {
         if (id != dto.Id)
@@ -60,6 +61,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    //[Authorize(Roles ="Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await _service.DeleteAsync(id);

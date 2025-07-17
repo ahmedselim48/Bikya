@@ -24,6 +24,13 @@ namespace Bikya.API.Areas.ReviewsArea.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpGet("seller/{sellerId}")]
+        public async Task<IActionResult> GetReviewsForSeller(int sellerId)
+        {
+            var response = await _service.GetReviewsForSellerAsync(sellerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,6 +47,8 @@ namespace Bikya.API.Areas.ReviewsArea.Controllers
             var response = await _service.AddAsync(dto);
             return StatusCode(response.StatusCode, response);
         }
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateReviewDTO dto)
@@ -58,5 +67,4 @@ namespace Bikya.API.Areas.ReviewsArea.Controllers
             return StatusCode(response.StatusCode, response);
         }
     }
-
 }
